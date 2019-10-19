@@ -10,16 +10,16 @@ data = pd.read_csv('data.csv')
 
 class main(Resource):
     def get(self):
-        if(request.args.get('date')):
-            date = request.args.get('date')
         #TASK1 get the time request
+        date = request.args.get('date')
+        if(date):
         #TASK2 compare the time in the request with data
             i = 0
-            while(date >= data.get('Time')[i].date()):
+            while(date >= datetime.strptime(data.get('Time'), '%Y-%M-%D')):
                 GMSL = data.get('GMSL')[i]
                 i+=1
         #TASK3 return the GMSL
-            return(GMSL)
+            return {'GMSL': GMSL}
 
 api.add_resource(main, '/')
 
