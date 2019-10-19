@@ -1,22 +1,27 @@
 from flask import Flask, request
 from flask_restful import Resource, Api
+import pandas as pd
+import datetime
 
 app = Flask(__name__)
 api = Api(app)
 
-class HelloWorld(Resource):
+data = pd.read_csv('data.csv')
+
+class main(Resource):
     def get(self):
-        return {'about': 'Hello, World!'}
-    def post(self):
-        some_json = request.get_json()
-        return {'you sent': some_json}, 201
+        if(request.args.get('date')):
+            date = request.args.get('date')
+        #TASK1 get the time request
+        #TASK2 compare the time in the request with data
+            i = 0
+            while(date >= data.get('Time')[i].date()):
+                GMSL = data.get('GMSL')[i]
+                i+=1
+        #TASK3 return the GMSL
+            return(GMSL)
 
-class Multi(Resource):
-    def get(self, num):
-        return {'result': num*10}
-
-api.add_resource(HelloWorld, '/')
-api.add_resource(Multi, '/multi/<int:num>')
+api.add_resource(main, '/')
 
 if __name__ == '__main__':
     app.run(debug = True)
